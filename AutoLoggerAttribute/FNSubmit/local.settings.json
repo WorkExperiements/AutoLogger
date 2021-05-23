@@ -1,7 +1,11 @@
 {
-    "IsEncrypted": false,
-    "Values": {
-        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
-    }
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "LogAnalytics.workspaceId": "209b311c-7977-4590-a02b-d87a0b58402a",
+    "LogAnalytics.workspaceKey": "So61kMuGMxmhBcBghNnk/ORPqKgSZvmxFu4br5Ge7yIwMS+JZxRHcut1/p2RUnjAMI+ypstf2EvvkxiUdVIdYQ==",
+    "LogAnalytics.partialLogAnalyticsUrl": ".ods.opinsights.azure.com/api/logs?api-version=2016-04-01",
+    "LogAnalytics.customLogName": "LL_Test"
+  }
 }
