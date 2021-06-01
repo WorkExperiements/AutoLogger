@@ -8,6 +8,8 @@ using System.IO;
 using Services.LogAnalytics;
 using Microsoft.Extensions.Configuration;
 using Services.LogAnalytics.Models;
+using Newtonsoft.Json;
+using FNSubmit.Models;
 
 namespace LoggerAttribute
 {
@@ -43,6 +45,7 @@ namespace LoggerAttribute
                 requestBody = streamReader.ReadToEndAsync().Result;
             }
 
+            var order = JsonConvert.DeserializeObject<Order>(requestBody);
             //var requestBody = result.ToString();
             var queryStrings = workItem.Query;
 
@@ -50,7 +53,7 @@ namespace LoggerAttribute
                 EventName = "Order_Submit",
                 EventRaiser = eventRaiser,
                 Payload = requestBody,
-                TransactionId = context.InvocationId.ToString(),
+                TransactionId = order.TransactionId,
                 TimeStamp = DateTime.UtcNow
             };
 
