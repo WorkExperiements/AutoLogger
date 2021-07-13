@@ -38,11 +38,9 @@ namespace FNSubmit
 
             var sbMsg = new OrderMessage() { OrderId = orderId, TransactionId = order.TransactionId };
 
-            string responseMessage = string.IsNullOrEmpty(order.OrderId)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {orderId}. This HTTP triggered function executed successfully.";
+            await _sbSrvc.SendMessage(JsonConvert.SerializeObject(sbMsg));
 
-            return new OkObjectResult(responseMessage);
+            return new OkObjectResult("Order Submit OK");
         }
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Services.LogAnalytics.Models;
 using Newtonsoft.Json;
 using FNSubmit.Models;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace LoggerAttribute
 {
@@ -17,6 +19,32 @@ namespace LoggerAttribute
     public class AutoLog : FunctionInvocationFilterAttribute
     {
         private IConfigurationRoot _config { get; set; }
+
+        private EventLogEntry CreateLogEntry(string inEventRaiser, HttpRequest inWorkItem )
+        {
+            // create payload
+            var eventRaiser = inEventRaiser;
+            var workItem = inWorkItem;
+            var requestBody = string.Empty;
+            using (StreamReader streamReader = new StreamReader(workItem.Body))
+            {
+                requestBody = streamReader.ReadToEndAsync().Result;
+            }
+
+            var order = JsonConvert.DeserializeObject<Order>(requestBody);
+            //var requestBody = result.ToString();
+            var queryStrings = workItem.Query;
+
+            var eventLogEntry = new EventLogEntry()
+            {
+                EventName = "Order_Submit",
+                EventRaiser = eventRaiser,
+                Payload = requestBody,
+                TransactionId = order.TransactionId,
+                TimeStamp = DateTime.UtcNow
+            };
+            return eventLogEntry;
+        }
 
         public override Task OnExecutingAsync(FunctionExecutingContext executingContext, CancellationToken cancellationToken)
         {
@@ -26,11 +54,7 @@ namespace LoggerAttribute
                 .FirstOrDefault() as Microsoft.Azure.WebJobs.ExecutionContext;
 
             // create configuration
-            _config = new ConfigurationBuilder()
-                .SetBasePath(context.FunctionAppDirectory)
-                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
+            _config = OptionsHelper.GetConfigs(context.FunctionAppDirectory);
 
             // instantiate service
             var logAnalyticsSrvc = new LogAnalyticsSvc();
@@ -61,6 +85,73 @@ namespace LoggerAttribute
             var resp = logAnalyticsSrvc.LogEventAsync(eventLogEntry, _config["LogAnalytics.customLogName"]).Result;
 
             return base.OnExecutingAsync(executingContext, cancellationToken);
+        }
+    }
+
+    public class ControllerAutoLog: ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext executingContext)
+        {
+            var config = OptionsHelper.GetConfigs(string.Empty);
+
+            // instantiate service
+            var logAnalyticsSrvc = new LogAnalyticsSvc();
+            logAnalyticsSrvc.Init(config["LogAnalytics.workspaceId"], config["LogAnalytics.workspaceKey"], config["LogAnalytics.partialLogAnalyticsUrl"]);
+
+            // create payload
+            var eventRaiser = $"{executingContext.Controller}|{executingContext.ActionDescriptor.DisplayName}";
+            string requestBodyStr = ReadBodyAsString(executingContext.HttpContext.Request);
+            var order = JsonConvert.DeserializeObject<Order>(requestBodyStr);
+            
+            var eventLogEntry = new EventLogEntry()
+            {
+                EventName = "Order_Submit",
+                EventRaiser = eventRaiser,
+                Payload = JsonConvert.SerializeObject(order),
+                TransactionId = order.TransactionId,
+                TimeStamp = DateTime.UtcNow
+            };
+
+            //send event log
+            var resp = logAnalyticsSrvc.LogEventAsync(eventLogEntry, config["LogAnalytics.customLogName"]).Result;
+
+            base.OnActionExecuting(executingContext);
+        }
+
+        private string ReadBodyAsString(HttpRequest request)
+        {
+            var initialBody = request.Body; // Workaround
+
+            try
+            {
+                request.EnableRewind();
+
+                using (StreamReader reader = new StreamReader(request.Body))
+                {
+                    string text = reader.ReadToEnd();
+                    return text;
+                }
+            }
+            finally
+            {
+                // Workaround so MVC action will be able to read body as well
+                request.Body = initialBody;
+            }
+            return string.Empty;
+        }
+    }
+
+    public static class OptionsHelper
+    {
+        public static IConfigurationRoot GetConfigs(string basePath)
+        {
+            var config = new ConfigurationBuilder()
+               .SetBasePath(basePath)
+               .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+               .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+               .AddEnvironmentVariables()
+               .Build();
+            return config;
         }
     }
 }
