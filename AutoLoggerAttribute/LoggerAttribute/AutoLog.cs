@@ -92,7 +92,9 @@ namespace LoggerAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext executingContext)
         {
-            var config = OptionsHelper.GetConfigs(string.Empty);
+            base.OnActionExecuting(executingContext);
+
+            var config = OptionsHelper.GetConfigs(Environment.CurrentDirectory);
 
             // instantiate service
             var logAnalyticsSrvc = new LogAnalyticsSvc();
@@ -108,14 +110,13 @@ namespace LoggerAttribute
                 EventName = "Order_Submit",
                 EventRaiser = eventRaiser,
                 Payload = JsonConvert.SerializeObject(order),
-                TransactionId = order.TransactionId,
+                TransactionId = order?.TransactionId ?? string.Empty,
                 TimeStamp = DateTime.UtcNow
             };
 
             //send event log
             var resp = logAnalyticsSrvc.LogEventAsync(eventLogEntry, config["LogAnalytics.customLogName"]).Result;
 
-            base.OnActionExecuting(executingContext);
         }
 
         private string ReadBodyAsString(HttpRequest request)
@@ -124,11 +125,11 @@ namespace LoggerAttribute
 
             try
             {
-                request.EnableRewind();
+                request.EnableBuffering();
 
                 using (StreamReader reader = new StreamReader(request.Body))
                 {
-                    string text = reader.ReadToEnd();
+                    string text = reader.ReadToEndAsync().Result;
                     return text;
                 }
             }

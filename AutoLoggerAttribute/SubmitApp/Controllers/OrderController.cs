@@ -1,7 +1,12 @@
 ﻿using LoggerAttribute;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Services.LogAnalytics;
+using Services.LogAnalytics.Models;
+using Services.ServiceBus;
 using SubmitApp.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace SubmitApp.Controllers
 {
@@ -9,17 +14,33 @@ namespace SubmitApp.Controllers
     [Route("[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly ILogger<OrderController> _logger;
-        public OrderController(ILogger<OrderController> logger)
+        private readonly ILogAnalyticsSrvc _logAnalyticsSrvc;
+        private readonly IServiceBusSrvc _serviceBus;
+        public OrderController(ILogAnalyticsSrvc logAnalyticsSvc, IServiceBusSrvc serviceBusSrvc)
         {
-            _logger = logger;
+            _logAnalyticsSrvc = logAnalyticsSvc;
+            _serviceBus = serviceBusSrvc;
         }
 
-        [AutoLog]
         [HttpPost]
         [Route("Submit")]
-        public IActionResult Submit(Order order)
+        public async Task<IActionResult> Submit(Order order)
         {
+            // create the logging payload
+            var eventLog = new EventLogEntry()
+            {
+                EventName = "Order_Submit",
+                EventRaiser = "Order|Submit",
+                Payload = order.OrderId,
+                TimeStamp = DateTime.UtcNow,
+                TransactionId = Guid.NewGuid().ToString()
+            };
+            _ = _logAnalyticsSrvc.LogEventAsync(eventLog, "Orders");
+            order.TransactionId = eventLog.TransactionId;
+
+            // continue with work, send to service bus
+            var serializedOrder  = Newtonsoft.Json.JsonConvert.SerializeObject(order);
+            await _serviceBus.SendMessage(serializedOrder);
 
             return Accepted();
         }
