@@ -15,7 +15,6 @@ namespace FNProcess
 {
     public static class FNProcess
     {
-        [AutoLog]
         [FunctionName("FNProcess")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
             HttpRequest req, ILogger log)
@@ -23,8 +22,8 @@ namespace FNProcess
             log.LogInformation($"Order process function triggered!");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             log.LogInformation(requestBody);
-            var order = JsonConvert.DeserializeObject<Order>(requestBody);
-            return new OkObjectResult("Order Submit OK");
+            //var order = JsonConvert.DeserializeObject<Order>(requestBody);
+            return new OkObjectResult(requestBody);
         }
     }
 }
