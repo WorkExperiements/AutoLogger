@@ -18,15 +18,15 @@ namespace FNProcess
         }
 
         [FunctionName("FNProcess")]
-        public async Task Run([ServiceBusTrigger("ordersubmit", Connection = "sb.connString")]
-    string sbMsg,
+        public void Run([ServiceBusTrigger("ordersubmit", Connection = "sb.connString")]
+    string myQueueItem,
     Int32 deliveryCount,
     DateTime enqueuedTimeUtc,
     string messageId,
     ILogger log)
         {
-            var order = JsonConvert.DeserializeObject<Order>(sbMsg);
-            log.LogInformation(sbMsg);
+            var order = JsonConvert.DeserializeObject<Order>(myQueueItem);
+            log.LogInformation(myQueueItem);
             log.LogInformation("----");
 
             // write into db

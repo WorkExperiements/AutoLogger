@@ -12,19 +12,17 @@ namespace FNProcess
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var root = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot") ?? $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
-            var config = new ConfigurationBuilder().SetBasePath(root)
-                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
+            //var root = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot") ?? $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
+            //var config = new ConfigurationBuilder().SetBasePath(root)
+            //    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+            //    .AddEnvironmentVariables()
+            //    .Build();
         }
 
         public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         {
-            var context = builder.GetContext();
-
-            var config = builder.ConfigurationBuilder
-                .SetBasePath(context.ApplicationRootPath)
+            //var root = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot") ?? $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
+            builder.ConfigurationBuilder
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
