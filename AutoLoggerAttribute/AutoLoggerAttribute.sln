@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "EvengLogService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNProcess", "FNProcess\FNProcess.csproj", "{B3B430E5-13AF-416D-8740-BED678BA021B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubmitApp", "SubmitApp\SubmitApp.csproj", "{56C285D1-3E0F-46FB-81CA-F9CADCF19213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubmitApp", "SubmitApp\SubmitApp.csproj", "{56C285D1-3E0F-46FB-81CA-F9CADCF19213}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNProcessOrder", "FNProcessOrder\FNProcessOrder.csproj", "{49E9910A-130A-41E9-BE13-ED745B5698A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{56C285D1-3E0F-46FB-81CA-F9CADCF19213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56C285D1-3E0F-46FB-81CA-F9CADCF19213}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56C285D1-3E0F-46FB-81CA-F9CADCF19213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49E9910A-130A-41E9-BE13-ED745B5698A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49E9910A-130A-41E9-BE13-ED745B5698A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49E9910A-130A-41E9-BE13-ED745B5698A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49E9910A-130A-41E9-BE13-ED745B5698A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
