@@ -1,29 +1,44 @@
 using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
-using FNSubmit.Models;
-using LoggerAttribute;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace FNProcess
 {
-    public static class FNProcess
+    public class FNProcess
     {
-        [FunctionName("FNProcess")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
-            HttpRequest req, ILogger log)
+        private readonly IConfiguration _config;
+        public FNProcess(IConfiguration config)
         {
-            log.LogInformation($"Order process function triggered!");
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            log.LogInformation(requestBody);
-            //var order = JsonConvert.DeserializeObject<Order>(requestBody);
-            return new OkObjectResult(requestBody);
+            _config = config;
+        }
+
+        [FunctionName("FNProcess")]
+        public async Task Run([ServiceBusTrigger("ordersubmit", Connection = "sb.connString")]
+    string sbMsg,
+    Int32 deliveryCount,
+    DateTime enqueuedTimeUtc,
+    string messageId,
+    ILogger log)
+        {
+            var order = JsonConvert.DeserializeObject<Order>(sbMsg);
+            log.LogInformation(sbMsg);
+            log.LogInformation("----");
+
+            // write into db
+            SqlConnection cnn = new SqlConnection(_config["dbconnectionString"]);
+
+            cnn.Open();
+
+            var command = cnn.CreateCommand();
+            command.CommandText = $"INSERT INTO order (OrderId, TransactionId, ProductName, ProductId, Status) VALUES ('{order.OrderId}', '{order.TransactionId}', '{order.Product.Name}', '{order.Product.ID}', 'Processed')";
+            var count = command.ExecuteNonQuery();
+            cnn.Close();
+
         }
     }
 }
