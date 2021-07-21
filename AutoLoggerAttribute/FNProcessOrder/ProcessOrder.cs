@@ -33,7 +33,7 @@ namespace FNProcessOrder
             cnn.Open();
 
             var command = cnn.CreateCommand();
-            command.CommandText = $"INSERT INTO [dbo].[Order] (OrderId, TransactionId, ProductName, ProductId, Status) VALUES ('{order.OrderId}', '{order.TransactionId}', '{order.Product.Name}', '{order.Product.ID}', 'Processed')";
+            command.CommandText = $"INSERT INTO [dbo].[Order] (OrderId, TransactionId, ProductName, ProductId, Status, LastUpdated) VALUES ('{order.OrderId}', '{order.TransactionId}', '{order.Product.Name}', '{order.Product.ID}', 'Processed', '{DateTime.Now}')";
             var count = command.ExecuteNonQuery();
             cnn.Close();
 
