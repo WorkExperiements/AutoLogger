@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNSubmit", "FNSubmit\FNSubmit.csproj", "{2F71B9C4-304B-46F6-97C4-D8B6176B315E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "EvengLogService\Services.csproj", "{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubmitApp", "SubmitApp\SubmitApp.csproj", "{56C285D1-3E0F-46FB-81CA-F9CADCF19213}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2F71B9C4-304B-46F6-97C4-D8B6176B315E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F71B9C4-304B-46F6-97C4-D8B6176B315E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F71B9C4-304B-46F6-97C4-D8B6176B315E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F71B9C4-304B-46F6-97C4-D8B6176B315E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}.Release|Any CPU.ActiveCfg = Release|Any CPU

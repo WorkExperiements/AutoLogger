@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Services.LogAnalytics;
+using Services.LogAnalytics.Models;
 
 namespace FNProcessOrder
 {
@@ -13,10 +14,10 @@ namespace FNProcessOrder
     {
         private readonly IConfiguration _configuration;
         private readonly ILogAnalyticsSrvc _logAnalyticsSrvc;
-        public ProcessOrder(IConfiguration configuration, ILogAnalyticsSrvc logAnalyticsSrvc)
+        public ProcessOrder(IConfiguration configuration)
         {
             _configuration = configuration;
-            _logAnalyticsSrvc = logAnalyticsSrvc;
+            _logAnalyticsSrvc = new LogAnalyticsSvc(_configuration["LogAnalytics.workspaceId"], _configuration["LogAnalytics.workspaceKey"], _configuration["LogAnalytics.partialLogAnalyticsUrl"]);
         }
 
         [FunctionName("ProcessOrder")]
@@ -38,6 +39,16 @@ namespace FNProcessOrder
 
 
             // write into log
+            // create the logging payload
+            var eventLog = new EventLogEntry()
+            {
+                EventName = "Order_Process",
+                EventRaiser = "AFN|Process",
+                Payload = order.OrderId,
+                TimeStamp = DateTime.UtcNow,
+                TransactionId = order.TransactionId
+            };
+            _ = _logAnalyticsSrvc.LogEventAsync(eventLog, "Orders");
         }
     }
 }

@@ -18,8 +18,6 @@ namespace FNProcessOrder
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
-
-            builder.Services.AddSingleton<ILogAnalyticsSrvc, LogAnalyticsSvc>();
         }
     }
 }

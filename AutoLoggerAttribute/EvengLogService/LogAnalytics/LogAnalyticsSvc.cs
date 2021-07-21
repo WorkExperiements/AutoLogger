@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Services.LogAnalytics.Models;
+﻿using Services.LogAnalytics.Models;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -18,11 +15,11 @@ namespace Services.LogAnalytics
         private string _workspaceKey;
         private string _partialLogAnalyticsUrl;
 
-        public LogAnalyticsSvc(IConfiguration config)
+        public LogAnalyticsSvc(string workspaceId, string workspaceKey, string partialLogAnalyticsUrl)
         {
-            _workspaceId = config["LogAnalytics.workspaceId"];
-            _workspaceKey = config["LogAnalytics.workspaceKey"];
-            _partialLogAnalyticsUrl = config["LogAnalytics.partialLogAnalyticsUrl"];
+            _workspaceId = workspaceId;// config["LogAnalytics.workspaceId"];
+            _workspaceKey = workspaceKey; // config["LogAnalytics.workspaceKey"];
+            _partialLogAnalyticsUrl = partialLogAnalyticsUrl;// config["LogAnalytics.partialLogAnalyticsUrl"];
         }
         
         public async Task<HttpResponseMessage> LogEventAsync(EventLogEntry eventLogEntry, string customLogName)

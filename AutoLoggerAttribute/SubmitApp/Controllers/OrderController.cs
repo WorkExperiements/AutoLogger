@@ -29,7 +29,7 @@ namespace SubmitApp.Controllers
             var eventLog = new EventLogEntry()
             {
                 EventName = "Order_Submit",
-                EventRaiser = "Order|Submit",
+                EventRaiser = "WebApp|Submit",
                 Payload = order.OrderId,
                 TimeStamp = DateTime.UtcNow,
                 TransactionId = Guid.NewGuid().ToString()

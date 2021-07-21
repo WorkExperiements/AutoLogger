@@ -39,7 +39,9 @@ namespace SubmitApp
             {
                 return new ServiceBusSrvc(config["sb.connString"], config["sb.qName"]);
             });
-            services.AddScoped<ILogAnalyticsSrvc,LogAnalyticsSvc>();
+            services.AddScoped<ILogAnalyticsSrvc>((s) => {
+                return new LogAnalyticsSvc(config["LogAnalytics.workspaceId"], config["LogAnalytics.workspaceKey"], config["LogAnalytics.partialLogAnalyticsUrl"]);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
