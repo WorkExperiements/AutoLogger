@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Services.LogAnalytics.Models;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,13 @@ namespace Services.LogAnalytics
         private string _workspaceKey;
         private string _partialLogAnalyticsUrl;
 
-        public void Init(string workspaceId, string workspaceKey, string partialLogAnalyticsUrl)
+        public LogAnalyticsSvc(IConfiguration config)
         {
-            _workspaceId = workspaceId;
-            _workspaceKey = workspaceKey;
-            _partialLogAnalyticsUrl = partialLogAnalyticsUrl;
+            _workspaceId = config["LogAnalytics.workspaceId"];
+            _workspaceKey = config["LogAnalytics.workspaceKey"];
+            _partialLogAnalyticsUrl = config["LogAnalytics.partialLogAnalyticsUrl"];
         }
+        
         public async Task<HttpResponseMessage> LogEventAsync(EventLogEntry eventLogEntry, string customLogName)
         {
             // Create a hash for the API signature

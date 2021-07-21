@@ -5,15 +5,18 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Services.LogAnalytics;
 
 namespace FNProcessOrder
 {
     public class ProcessOrder
     {
         private readonly IConfiguration _configuration;
-        public ProcessOrder(IConfiguration configuration)
+        private readonly ILogAnalyticsSrvc _logAnalyticsSrvc;
+        public ProcessOrder(IConfiguration configuration, ILogAnalyticsSrvc logAnalyticsSrvc)
         {
             _configuration = configuration;
+            _logAnalyticsSrvc = logAnalyticsSrvc;
         }
 
         [FunctionName("ProcessOrder")]
@@ -32,6 +35,9 @@ namespace FNProcessOrder
             command.CommandText = $"INSERT INTO [dbo].[Order] (OrderId, TransactionId, ProductName, ProductId, Status) VALUES ('{order.OrderId}', '{order.TransactionId}', '{order.Product.Name}', '{order.Product.ID}', 'Processed')";
             var count = command.ExecuteNonQuery();
             cnn.Close();
+
+
+            // write into log
         }
     }
 }

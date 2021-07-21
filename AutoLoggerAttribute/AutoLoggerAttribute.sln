@@ -5,15 +5,11 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNSubmit", "FNSubmit\FNSubmit.csproj", "{2F71B9C4-304B-46F6-97C4-D8B6176B315E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerAttribute", "LoggerAttribute\LoggerAttribute.csproj", "{EE6255D1-F3FE-4FA0-85FD-19F053F093DE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "EvengLogService\Services.csproj", "{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNProcess", "FNProcess\FNProcess.csproj", "{B3B430E5-13AF-416D-8740-BED678BA021B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubmitApp", "SubmitApp\SubmitApp.csproj", "{56C285D1-3E0F-46FB-81CA-F9CADCF19213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNProcessOrder", "FNProcessOrder\FNProcessOrder.csproj", "{49E9910A-130A-41E9-BE13-ED745B5698A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNProcessOrder", "FNProcessOrder\FNProcessOrder.csproj", "{49E9910A-130A-41E9-BE13-ED745B5698A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,18 +21,10 @@ Global
 		{2F71B9C4-304B-46F6-97C4-D8B6176B315E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F71B9C4-304B-46F6-97C4-D8B6176B315E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F71B9C4-304B-46F6-97C4-D8B6176B315E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE6255D1-F3FE-4FA0-85FD-19F053F093DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE6255D1-F3FE-4FA0-85FD-19F053F093DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE6255D1-F3FE-4FA0-85FD-19F053F093DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE6255D1-F3FE-4FA0-85FD-19F053F093DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02F95AAB-5FA6-4C90-AF95-B61B1FC38B54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3B430E5-13AF-416D-8740-BED678BA021B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3B430E5-13AF-416D-8740-BED678BA021B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3B430E5-13AF-416D-8740-BED678BA021B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3B430E5-13AF-416D-8740-BED678BA021B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{56C285D1-3E0F-46FB-81CA-F9CADCF19213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56C285D1-3E0F-46FB-81CA-F9CADCF19213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56C285D1-3E0F-46FB-81CA-F9CADCF19213}.Release|Any CPU.ActiveCfg = Release|Any CPU

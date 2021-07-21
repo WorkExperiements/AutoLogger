@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Services.ServiceBus;
+//using Services.ServiceBus;
 using System;
 
 [assembly: FunctionsStartup(typeof(FNSubmit.Startup))]
@@ -19,10 +19,10 @@ namespace FNSubmit
                 .AddEnvironmentVariables()
                 .Build();
 
-            builder.Services.AddScoped<IServiceBusSrvc>((s) =>
-            {
-                return new ServiceBusSrvc(config["sb.connString"], config["sb.qName"]);
-            });
+            //builder.Services.AddScoped<IServiceBusSrvc>((s) =>
+            //{
+            //    return new ServiceBusSrvc(config["sb.connString"], config["sb.qName"]);
+            //});
         }
 
         public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
