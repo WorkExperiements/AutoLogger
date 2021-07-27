@@ -23,6 +23,8 @@ namespace FNProcessOrder
         [FunctionName("ProcessOrder")]
         public void Run([ServiceBusTrigger("ordersubmit", Connection = "sb.connString")]string myQueueItem, ILogger log)
         {
+            // create artificial 10% chance of failure rate
+            if (new Random().Next(1, 11) > 9) { throw new Exception(); }
             var order = JsonConvert.DeserializeObject<Order>(myQueueItem);
             // write into log
             // create the logging payload
@@ -41,9 +43,11 @@ namespace FNProcessOrder
             log.LogInformation("----");
 
             // write into db
-            DbHelper.CreateOrderInDb(_configuration["dbconnectionString"], order);
+            // simulates an external dependency that we have no access to
+            // Ex: creating an automation in SMC
+            BlackBoxService.SpookyOp(_configuration["dbconnectionString"], order);
 
-
+            
             // write into log
             // create the logging payload
             eventLog = new EventLogEntry()

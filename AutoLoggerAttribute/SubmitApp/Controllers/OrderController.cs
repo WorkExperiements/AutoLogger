@@ -37,6 +37,10 @@ namespace SubmitApp.Controllers
             _ = _logAnalyticsSrvc.LogEventAsync(eventLog, "Orders");
             order.TransactionId = eventLog.TransactionId;
 
+            // create artificial 10% chance of failure rate
+            var currChance = new Random().Next(1, 11);
+            if ( currChance > 9) { throw new Exception(); }
+
             // continue with work, send to service bus
             var serializedOrder  = Newtonsoft.Json.JsonConvert.SerializeObject(order);
             await _serviceBus.SendMessage(serializedOrder);

@@ -5,10 +5,18 @@ using System.Text;
 
 namespace FNProcessOrder
 {
-    public static class DbHelper
+    public static class BlackBoxService
     {
-        public static void CreateOrderInDb(string connString, Order order)
+        public static void SpookyOp(string connString, Order order)
         {
+
+            // this will fail if day of the week is % 4 (fail every 4th day)
+            var todayDay = DateTime.Now.Day;
+            if (todayDay % 4 == 0)
+            {
+                throw new Exception();
+            }
+
             SqlConnection cnn = new SqlConnection(connString);
 
             cnn.Open();
