@@ -7,11 +7,11 @@ namespace FNFulfillOrder
 {
     public static class DBHelper
     {
-        public static void UpdateOrders(string connStr)
+        public static int UpdateOrders(string connStr)
         {
             // write into db
-            SqlConnection cnn = new SqlConnection();
-
+            SqlConnection cnn = new SqlConnection(connStr);
+            var count = 0;
             cnn.Open();
 
             var orderIds = new List<int>();
@@ -29,11 +29,13 @@ namespace FNFulfillOrder
             foreach (var orderId in orderIds)
             {
                 command = cnn.CreateCommand();
-                command.CommandText = $"UPDATE [order] (status, LastUpdated) VALUES ('Complete', '{DateTime.Now}') WHERE id = '{orderId}'";
+                command.CommandText = $"UPDATE [dbo].[order] SET status='Complete', LastUpdated='{DateTime.Now}' WHERE id = '{orderId}'";
                 var _ = command.ExecuteNonQuery();
+                count++;
             }
 
             cnn.Close();
+            return count;
         }
     }
 }

@@ -24,25 +24,31 @@ namespace FNProcessOrder
         public void Run([ServiceBusTrigger("ordersubmit", Connection = "sb.connString")]string myQueueItem, ILogger log)
         {
             var order = JsonConvert.DeserializeObject<Order>(myQueueItem);
-            log.LogInformation(myQueueItem);
-            log.LogInformation("----");
-
-            // write into db
-            SqlConnection cnn = new SqlConnection(_configuration["dbconnectionString"]);
-
-            cnn.Open();
-
-            var command = cnn.CreateCommand();
-            command.CommandText = $"INSERT INTO [dbo].[Order] (OrderId, TransactionId, ProductName, ProductId, Status, LastUpdated) VALUES ('{order.OrderId}', '{order.TransactionId}', '{order.Product.Name}', '{order.Product.ID}', 'Processed', '{DateTime.Now}')";
-            var count = command.ExecuteNonQuery();
-            cnn.Close();
-
-
             // write into log
             // create the logging payload
             var eventLog = new EventLogEntry()
             {
-                EventName = "Order_Process",
+                EventName = "Order_Detected",
+                EventRaiser = "AFN|Process",
+                Payload = order.OrderId,
+                TimeStamp = DateTime.UtcNow,
+                TransactionId = order.TransactionId
+            };
+            _ = _logAnalyticsSrvc.LogEventAsync(eventLog, "Orders");
+
+
+            log.LogInformation(myQueueItem);
+            log.LogInformation("----");
+
+            // write into db
+            DbHelper.CreateOrderInDb(_configuration["dbconnectionString"], order);
+
+
+            // write into log
+            // create the logging payload
+            eventLog = new EventLogEntry()
+            {
+                EventName = "Order_Processed",
                 EventRaiser = "AFN|Process",
                 Payload = order.OrderId,
                 TimeStamp = DateTime.UtcNow,

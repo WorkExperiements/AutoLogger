@@ -32,9 +32,9 @@ namespace FNFulfillOrder
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             // update orders to completed
-            DBHelper.UpdateOrders(_configuration["dbconnectionString"]); 
+            var totalUpdates = DBHelper.UpdateOrders(_configuration["dbconnectionString"]); 
 
-            return new OkObjectResult(null);
+            return new OkObjectResult(totalUpdates);
         }
     }
 }
