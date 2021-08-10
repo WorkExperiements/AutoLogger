@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LogAnalytics\**" />
+    <EmbeddedResource Remove="LogAnalytics\**" />
+    <None Remove="LogAnalytics\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

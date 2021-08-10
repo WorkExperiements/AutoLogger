@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LogExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EvengLogService\Services.csproj" />
   </ItemGroup>
 

@@ -25,15 +25,7 @@ namespace Services.LogAnalytics
         public async Task<HttpResponseMessage> LogEventAsync(EventLogEntry eventLogEntry, string customLogName)
         {
             // Create a hash for the API signature
-            var datestring = DateTime.UtcNow.ToString("r");
-            var json = JsonSerializer.Serialize(eventLogEntry);
-
-            var jsonBytes = Encoding.UTF8.GetBytes(json);
-            string stringToHash = "POST\n" + jsonBytes.Length + "\napplication/json\n" + "x-ms-date:" + datestring + "\n/api/logs";
-            string hashedString = BuildSignature(stringToHash, _workspaceKey);
-            string signature = "SharedKey " + _workspaceId + ":" + hashedString;
-
-            return await PostData(signature, datestring, json, customLogName);
+            
         }
 
         private static string BuildSignature(string message, string secret)
@@ -50,26 +42,7 @@ namespace Services.LogAnalytics
 
         private async Task<HttpResponseMessage> PostData(string signature, string date, string json, string logName)
         {
-            try
-            {
-                string url = $"https://{_workspaceId}{_partialLogAnalyticsUrl}"; //".ods.opinsights.azure.com/api/logs?api-version=2016-04-01";
-
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-                client.DefaultRequestHeaders.Add("Log-Type", logName);
-                client.DefaultRequestHeaders.Add("Authorization", signature);
-                client.DefaultRequestHeaders.Add("x-ms-date", date);
-
-                HttpContent httpContent = new StringContent(json, Encoding.UTF8);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                HttpResponseMessage response = await client.PostAsync(new Uri(url), httpContent);
-                return response;
-                
-            }
-            catch (Exception)
-            {
-                throw;  
-            }
+            
         }
     }
 }

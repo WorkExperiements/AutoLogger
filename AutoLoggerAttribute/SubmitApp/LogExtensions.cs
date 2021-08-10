@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Services.LogAnalytics;
-using Services.LogAnalytics.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
